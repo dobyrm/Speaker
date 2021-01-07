@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+    <style>
+		body {
+			font-family: sans-serif;
+		}
+
+		#error {
+			color: red;
+			display: none;
+		}
+	</style>
+
+    <title>Speaker</title>
+  </head>
+  <body>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm">
+				<hr />
+				<div id="error">Данный браузер не поддерживает объект speechSynthesis</div>
+				<div id="control">
+					<button type="button" class="btn btn-outline-primary" id="speak"><i class="fas fa-play"></i> Speak</button>
+					<button type="button" class="btn btn-outline-secondary" id="cancel"><i class="fas fa-stop"></i> Cancel</button>
+				</div>
+				<hr />
+
+				<div id="sound_block">
+					<ul>
+						<li>
+							Что разум человека может постигнуть и во что он может поверить, того он способен достич. Наполеон Хилл, журналист и писатель.
+						</li>
+						<li>
+							Стремитесь не к успеху, а к ценностям, которые он дает​. Альберт Эйнштейн.
+						</li>
+						<li>
+							Своим успехом я обязана тому, что никогда не оправдывалась и не принимала оправданий от других. Флоренс Найтингейл.
+						</li>
+						<li>
+							За свою карьеру я пропустил более 9000 бросков, проиграл почти 300 игр. 26 раз мне доверяли сделать финальный победный бросок, и я промахивался. Я терпел поражения снова, и снова, и снова. И именно поэтому я добился успеха. Майкл Джордан.
+						</li>
+						<li>
+							Сложнее всего начать действовать, все остальное зависит только от упорства. Амелия Эрхарт.
+						</li>
+						<li>
+							Надо любить жизнь больше, чем смысл жизни. Федор Достоевский.
+						</li>
+						<li>
+							Жизнь - это то, что с тобой происходит, пока ты строишь планы. Джон Леннон.
+						</li>
+						<li>
+							Логика может привести Вас от пункта А к пункту Б, а воображение — куда угодно. Альберт Эйнштейн.
+						</li>
+						<li>
+							Через 20 лет вы будете больше разочарованы теми вещами, которые вы не делали, чем теми, которые вы сделали. Так отчальте от тихой пристани. Почувствуйте попутный ветер в вашем парусе. Двигайтесь вперед, действуйте, открывайте. Марк Твен.
+						</li>
+						<li>
+							Начинать всегда стоит с того, что сеет сомнения. Борис Стругацкий.
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+    <script>
+		if (!window.SpeechSynthesisUtterance) {
+			document.getElementById("error").style.display = "block";
+			document.getElementById("control").style.display = "none";
+		}
+
+		var lang = "ru-RU";
+
+		var synth = window.speechSynthesis,
+		    soundBlock = document.getElementById("sound_block"),
+		    voice = '',
+		    supportedVoices = [];
+
+		document.getElementById("speak").onclick = function() {
+			if (0 === supportedVoices.length) {
+				var voices = synth.getVoices();
+			}
+
+			for (var i = 0; i < voices.length; i++) {
+				if (lang == voices[i].lang) {
+					voice = voices[i];
+				}
+			}
+
+			var words = soundBlock.innerText.split('.');
+			for (var i = 0; i < words.length; i++) {
+				var utterThis = new SpeechSynthesisUtterance(words[i]);
+				utterThis.voice = voice;
+				synth.speak(utterThis);
+			}
+		}
+
+		document.getElementById("cancel").onclick = function() {
+			synth.cancel();
+		}
+	</script>
+  </body>
+</html>
